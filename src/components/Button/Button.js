@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 const LoadMoreBtn = styled.button`
@@ -24,18 +23,16 @@ const LoadMoreBtn = styled.button`
   }
 `;
 
-export default class Button extends Component {
-  onBtnClick = () => {
-    this.props.onClick();
+export default function Button(props) {
+  const onBtnClick = () => {
+    props.onClick();
   };
 
-  render() {
-    return (
-      <LoadMoreBtn type="button" onClick={this.onBtnClick}>
-        &nbsp;Load&nbsp;more&nbsp;
-      </LoadMoreBtn>
-    );
-  }
+  return (
+    <LoadMoreBtn type="button" onClick={onBtnClick}>
+      &nbsp;Load&nbsp;more&nbsp;
+    </LoadMoreBtn>
+  );
 }
 
 Button.propTypes = {

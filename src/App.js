@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { PER_PAGE } from './components/const/const';
+import { PER_PAGE } from './components/constList/constList';
 import Searchbar from './components/Searchbar/Searchbar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import ImageGalleryItem from './components/ImageGalleryItem/ImageGalleryItem';
@@ -11,16 +11,23 @@ import SpinnerLoader from './components/Loader/Loader';
 
 export default class App extends Component {
   state = {
-    showModal: { isshow: false, src: null, alt: null },
+    showModal: { isShow: false, src: null, alt: null },
     isLoading: false,
     querry: '',
     totalImg: null,
-    currentPage: null,
+    currentPage: 1,
     imagesData: [],
     error: null,
   };
 
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.querry !== this.state.querry ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      this.getQuerryData(this.state.querry, this.state.currentPage);
+    }
+  }
 
   handleSubmit = querryObj => {
     const { querry } = querryObj;
@@ -30,16 +37,15 @@ export default class App extends Component {
       return;
     }
 
-    this.setState({ querry: querry });
-    this.getQuerryData(querry);
+    this.setState({ querry: querry, currentPage: 1 });
   };
 
-  async getQuerryData(querry, currPage = 1) {
-    try {
-      this.setState({
-        isLoading: true,
-      });
+  async getQuerryData(querry, currPage) {
+    this.setState({
+      isLoading: true,
+    });
 
+    try {
       const imagesData = await getImagesGallery(querry, currPage);
       if (imagesData) {
         const { total, hits } = imagesData;
@@ -89,14 +95,14 @@ export default class App extends Component {
   }
 
   onClickLoadMoreBtn = () => {
-    this.getQuerryData(this.state.querry, this.state.currentPage + 1);
+    this.setState(prevState => ({ currentPage: prevState.currentPage + 1 }));
   };
 
   toggleModal = modalObj => {
-    const { isshow } = this.state.showModal;
+    const { isShow } = this.state.showModal;
     this.setState({
       showModal: {
-        isshow: !isshow,
+        isShow: !isShow,
         src: modalObj.max,
         alt: modalObj.tag,
       },
@@ -106,7 +112,7 @@ export default class App extends Component {
   modalClose = () => {
     this.setState({
       showModal: {
-        isshow: false,
+        isShow: false,
         src: null,
         alt: null,
       },
@@ -114,13 +120,13 @@ export default class App extends Component {
   };
 
   render() {
-    const { isshow } = this.state.showModal;
+    const { isShow } = this.state.showModal;
     const pageLeave =
       Math.ceil(this.state.totalImg / PER_PAGE) - this.state.currentPage;
 
     return (
       <>
-        {isshow && (
+        {isShow && (
           <Modal onShow={this.state.showModal} onClose={this.modalClose} />
         )}
         <Toaster />

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import styled from 'styled-components';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import PropTypes from 'prop-types';
@@ -18,26 +17,22 @@ const Gallery = styled.ul`
   }
 `;
 
-export default class ImageGallery extends Component {
-  render() {
-    const images = this.props.images;
-
-    return (
-      images.length > 0 && (
-        <Gallery>
-          {images.map(image => (
-            <ImageGalleryItem
-              key={image.id}
-              imgSrc={image.min}
-              max={image.max}
-              tag={image.tags}
-              onImgClick={this.props.onClick}
-            />
-          ))}
-        </Gallery>
-      )
-    );
-  }
+export default function ImageGallery(props) {
+  return (
+    props.images.length > 0 && (
+      <Gallery>
+        {props.images.map(image => (
+          <ImageGalleryItem
+            key={image.id}
+            imgSrc={image.min}
+            max={image.max}
+            tag={image.tags}
+            onImgClick={props.onClick}
+          />
+        ))}
+      </Gallery>
+    )
+  );
 }
 
 ImageGallery.propTypes = {

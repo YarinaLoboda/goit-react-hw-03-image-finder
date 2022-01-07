@@ -63,7 +63,7 @@ export default class Modal extends Component {
 Modal.propTypes = {
   onShow: PropTypes.shape({
     alt: PropTypes.string.isRequired,
-    isshow: PropTypes.bool.isRequired,
+    isShow: PropTypes.bool.isRequired,
     src: PropTypes.string.isRequired,
   }),
 

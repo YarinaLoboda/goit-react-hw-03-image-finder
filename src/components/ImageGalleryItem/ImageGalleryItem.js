@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 const GalleryItem = styled.li`
@@ -24,26 +23,22 @@ const GalleryItemImage = styled.img`
   }
 `;
 
-class ImageGalleryItem extends Component {
-  onImageClick = evt => {
-    this.props.onImgClick({ max: this.props.max, tag: this.props.tag });
+export default function ImageGalleryItem(props) {
+  const onImageClick = evt => {
+    props.onImgClick({ max: props.max, tag: props.tag });
   };
 
-  render() {
-    return (
-      <GalleryItem>
-        <GalleryItemImage
-          onClick={this.onImageClick}
-          src={this.props.imgSrc}
-          originalImg={this.props.max}
-          alt={this.props.tag}
-        />
-      </GalleryItem>
-    );
-  }
+  return (
+    <GalleryItem>
+      <GalleryItemImage
+        onClick={onImageClick}
+        src={props.imgSrc}
+        originalImg={props.max}
+        alt={props.tag}
+      />
+    </GalleryItem>
+  );
 }
-
-export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
   images: PropTypes.arrayOf(
